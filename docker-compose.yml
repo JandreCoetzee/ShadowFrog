@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    reverseproxy:
+        image: reverseproxy
+        build: 
+          context: ./reverse-proxy
+          dockerfile: ./Dockerfile
+        ports:
+            - 8080:8080
+            - 8081:8081
+        restart: always
+
+    security:
+        depends_on:
+            - reverseproxy
+        image: security
+        build: 
+          context: ./security
+          dockerfile: ./Dockerfile
+        restart: always
+
+    blog:
+        depends_on:
+            - reverseproxy
+        image: blog
+        build: 
+          context: ./blog
+          dockerfile: ./Dockerfile
+        restart: always
