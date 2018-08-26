@@ -1,9 +1,19 @@
-var http = require('http');
-
-var handleRequest = function(request, response) {
-  console.log('Received request for URL: ' + request.url);
-  response.writeHead(200);
-  response.end('blog!');
+let http = require('http');
+let fs = require('fs');
+ 
+let handleRequest = (request, response) => {
+    response.writeHead(200, {
+        'Content-Type': 'text/html'
+    });
+    fs.readFile('./app_offline.html', null, function (error, data) {
+        if (error) {
+            response.writeHead(404);
+            respone.write('Whoops! File not found!');
+        } else {
+            response.write(data);
+        }
+        response.end();
+    });
 };
-var www = http.createServer(handleRequest);
-www.listen(80);
+ 
+http.createServer(handleRequest).listen(80);
